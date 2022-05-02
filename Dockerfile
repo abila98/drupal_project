@@ -16,13 +16,21 @@ RUN wget https://www.drupal.org/download-latest/tar.gz -O drupal.tar.gz
 RUN tar -xvf drupal.tar.gz
 RUN mv drupal-* /var/www/html/drupal
 
+#change ownership and permissions
 RUN chown -R www-data:www-data /var/www/html/drupal/
 RUN chmod -R 755 /var/www/html/drupal/
 
+#apache configurations
 COPY apache2-app.conf /etc/apache2/sites-enabled/000-default.conf
+
+#drupal configurations
+RUN mkdir -p /var/www/html/sites/default/
+RUN cp /var/www/html/drupal/sites/default/default.settings.php /var/www/html/drupal/sites/default/settings.php
+RUN chmod 664 /var/www/html/drupal/sites/default/settings.php
 RUN a2enmod rewrite
+RUN chown -R :www-data /var/www/html/drupal/*
 
 #Codebase
-COPY docroot /var/www/html
+COPY docroot /var/www/html/drupal
 
 CMD /usr/sbin/apache2ctl -D FOREGROUND
