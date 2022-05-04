@@ -29,8 +29,8 @@ RUN cp /var/www/html/drupal/sites/default/default.settings.php /var/www/html/dru
 RUN chmod 664 /var/www/html/drupal/sites/default/settings.php
 RUN a2enmod rewrite
 RUN chown -R :www-data /var/www/html/drupal/*
-
+RUN chmod 644 /var/www/html/drupal/sites/default/settings.php
 #Codebase
-COPY docroot /var/www/html/drupal
+COPY docroot/ /var/www/html/drupal
 
 CMD /usr/sbin/apache2ctl -D FOREGROUND
