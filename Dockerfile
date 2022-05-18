@@ -4,8 +4,9 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     gnupg \
     curl wget vim openssh-server software-properties-common netcat apachetop htop && \
-apt-get install --no-install-recommends -y build-essential apt-transport-https lsb-release ca-certificates -y && \
-rm -rf /var/lib/apt/lists/*
+    apt-get update && \
+    apt-get install --no-install-recommends -y build-essential apt-transport-https lsb-release ca-certificates -y && \
+    rm -rf /var/lib/apt/lists/*
 
 #PHP Setup
 RUN wget -q -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
@@ -35,4 +36,4 @@ chown -R :www-data /var/www/html/drupal/*
 #Codebase
 COPY docroot/ /var/www/html/drupal
 
-CMD ["/usr/sbin/apache2ctl -D FOREGROUND"]
+CMD /usr/sbin/apache2ctl -D FOREGROUND
